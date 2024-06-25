@@ -1,7 +1,7 @@
 # get_type_name<T>
 
 get_type_name is a single header file which provides a function `zxshady::get_type_name<T>()` which 
-gets the name of a type.
+gets the name of a type for GCC,Clang,MSVC.
 
 # Examples:
 ```cpp
@@ -24,3 +24,7 @@ struct MyString{
 MyString mystr = name; // works 
 
 ```
+
+
+
+tested on `godbolt.org` on every compiler version there.
