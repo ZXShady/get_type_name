@@ -45,7 +45,7 @@
 
 namespace zxshady {
 
-struct get_type_name_result {
+class get_type_name_result {
 public:
     ZXSHADY_CONSTEXPR get_type_name_result(const char* begin, const char* end) ZXSHADY_NOEXCEPT
         : m_begin(begin)
