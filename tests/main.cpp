@@ -52,8 +52,30 @@ void test(std::string str,std::string expected,unsigned int line)
 // gcc has a bug that __PRETTY_FUNCTION__ is not constexpr in 8.0 and 9.2 but it is in 8.2 and versions <= 7.0
 #define STATIC_TEST(type_str,type) static_assert(strcompare_no_space(zxshady::get_type_name<RESOLVE(type)>().template to<std::string_view>(),type_str),"failed")
 
+
+void github_readme()
+{
+    auto name = zxshady::get_type_name<long long int>(); 
+    // name is of type zxshady::get_type_name_result which has a conversion operator to any type
+    // that supports construction from const char* and Container::size_type of the type
+
+    for(auto c : name) { // supports forward-iterators not reverse iterators though
+        std::printf("%c",c); 
+    }
+    std::printf("\n");
+    std::string string = name; // converts to string implicitly
+    std::string string2 = name.template to<std::string>(); // using to method
+    std::puts(string.c_str());
+    struct MyString{
+        using size_type = std::size_t; // this is a important the conversion functions uses this alias
+        MyString(const char* s, std::size_t n) {}
+    };
+    MyString mstr = name;
+}
+
 int main()
 {
+    github_readme();
         std::puts(__TIME__);
     try {
         TEST("float", float);
@@ -67,9 +89,11 @@ int main()
         
 #if defined(__clang__) && __clang_major__ >= 12
         TEST("std::basic_string<char>",std::string);
+#elif defined(__clang__) && __clang_major__ <= 11
+        TEST("std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>",std::string);
 #else
         TEST(GCM("std::__cxx11::basic_string<char>"
-             , "std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>"
+             , "Clang is not handled here there ^^^^ "
              , "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >"), std::string);
 
 #endif
