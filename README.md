@@ -28,3 +28,7 @@ MyString mystr = name; // works
 
 
 tested on `godbolt.org` on every compiler version there.
+
+
+[NOTE] this won't work for types longer than 65536 characters if using a 16-bit-int that sucks I know.
+NOTE.
