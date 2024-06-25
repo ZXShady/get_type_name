@@ -57,10 +57,10 @@ public:
     ZXSHADY_CONSTEXPR const char* end() const ZXSHADY_NOEXCEPT { return m_end; }
 
     template<typename T>
-    ZXSHADY_CONSTEXPR operator T() const ZXSHADY_NOEXCEPT { return T(m_begin, static_cast<typename T::size_type>(m_end - m_begin)); };
+    ZXSHADY_CONSTEXPR operator T() const { return T(m_begin, static_cast<typename T::size_type>(m_end - m_begin)); };
 
     template<typename T>
-    ZXSHADY_CONSTEXPR T to() const ZXSHADY_NOEXCEPT { return T(m_begin, static_cast<typename T::size_type>(m_end - m_begin)); };
+    ZXSHADY_CONSTEXPR T to() const { return T(m_begin, static_cast<typename T::size_type>(m_end - m_begin)); };
 private:
     const char* m_begin;
     const char* m_end;
