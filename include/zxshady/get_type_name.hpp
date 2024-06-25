@@ -1,5 +1,5 @@
-#ifndef ZXSHADY_EXTRA_TRAITS_HPP
-#define ZXSHADY_EXTRA_TRAITS_HPP
+#ifndef ZXSHADY_GET_TYPE_NAME_HPP
+#define ZXSHADY_GET_TYPE_NAME_HPP
 
 
 #ifndef ZXSHADY_CONSTEXPR
@@ -114,4 +114,4 @@ zxshady::get_type_name_result get_type_name(void) ZXSHADY_NOEXCEPT
 }
 
 }
-#endif // !defined(ZXSHADY_EXTRA_TRAITS_HPP)
+#endif // !defined(ZXSHADY_GET_TYPE_NAME_HPP)
