@@ -1,6 +1,6 @@
 # get_type_name<T>
 
-get_type_name is a single header file which provides a function `zxshady::get_type_name<T>()` which 
+get_type_name is a single header file which does not use any standard library headers and provides a function `zxshady::get_type_name<T>()` which 
 gets the name of a type for GCC,Clang,MSVC.
 
 # Examples:
