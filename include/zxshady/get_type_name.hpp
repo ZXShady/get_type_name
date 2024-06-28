@@ -72,7 +72,7 @@ namespace details {
 // __FUNCSIG__ == __FUNCSIG__ <--- may be false
 // why isn't len size_t? becuase it ain't worth including <cstddef> and no string will be longer than 2^16
 // which is the miniumum integer that 'unsigned int' can hold
-ZXSHADY_CONSTEXPR get_type_name_result get_type_name_variables(const char* s, unsigned int len) ZXSHADY_NOEXCEPT
+inline ZXSHADY_CONSTEXPR get_type_name_result get_type_name_variables(const char* s, unsigned int len) ZXSHADY_NOEXCEPT
 {
 #ifdef __clang__
     return get_type_name_result(s + 60, s + len - 2);
