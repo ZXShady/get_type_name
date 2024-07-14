@@ -1,8 +1,9 @@
+
 #include <string>
 #include <iostream>
 #include <cstdio>
 #include <algorithm>
-#include <zxshady/get_type_name.hpp>
+#include "../include/zxshady/get_type_name.hpp"
 
 #if defined(__clang__)
 #define GCM(gnu,clang,msvc) clang
@@ -47,30 +48,27 @@ void test(std::string str,std::string expected,unsigned int line)
 
 #define TEST(type_str,type) test(zxshady::get_type_name<RESOLVE(type)>(),type_str,static_cast<unsigned int>(__LINE__))
 
-
-// Static test not used although the  strings are constant?
-// gcc has a bug that __PRETTY_FUNCTION__ is not constexpr in 8.0 and 9.2 but it is in 8.2 and versions <= 7.0
-#define STATIC_TEST(type_str,type) static_assert(strcompare_no_space(zxshady::get_type_name<RESOLVE(type)>().template to<std::string_view>(),type_str),"failed")
-
-
+struct MyString{
+        typedef std::size_t size_type; // this is a important the conversion functions uses this alias
+        MyString(const char*, size_type) {}
+    };
 void github_readme()
 {
-    auto name = zxshady::get_type_name<long long int>(); 
+    zxshady::get_type_name_result name = zxshady::get_type_name<void(int)>(); 
     // name is of type zxshady::get_type_name_result which has a conversion operator to any type
     // that supports construction from const char* and Container::size_type of the type
 
-    for(auto c : name) { // supports forward-iterators not reverse iterators though
-        std::printf("%c",c); 
+    for(const char* iter = name.begin(),* const end=name.end();iter != end;++iter) { // supports forward-iterators not reverse iterators though
+        std::printf("%c",*iter); 
     }
     std::printf("\n");
     std::string string = name; // converts to string implicitly
-    std::string string2 = name.template to<std::string>(); // using to method
+    std::string string2 = name.to<std::string>(); // using to method
     std::puts(string.c_str());
-    struct MyString{
-        using size_type = std::size_t; // this is a important the conversion functions uses this alias
-        MyString(const char* s, std::size_t n) {}
-    };
+    
     MyString mstr = name;
+    (void)mstr;
+    (void)string2;
 }
 
 int main()
@@ -83,17 +81,17 @@ int main()
         TEST("int", int);
         TEST("unsigned int", unsigned int);
         TEST(GCM("long int", "long", "long"), long);
+#if ZXSHADY_CPP_VER >= 201103L
         TEST(GCM("long long unsigned int", "unsigned long long", "unsigned __int64"), unsigned long long int);
+#endif
         TEST(GCM("const void(int)","const void(int)","const void(const int)"), const void(const int));
         TEST(GCM("void* volatile* const", "void *volatile *const", "void*volatile *const "), void* volatile* const);
         
 #if defined(__clang__) && __clang_major__ >= 12
         TEST("std::basic_string<char>",std::string);
-#elif defined(__clang__) && __clang_major__ <= 11
-        TEST("std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>",std::string);
 #else
         TEST(GCM("std::__cxx11::basic_string<char>"
-             , "Clang is not handled here there ^^^^ "
+             , "std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>"
              , "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >"), std::string);
 
 #endif
@@ -118,7 +116,7 @@ int main()
 #if !(defined(_MSC_VER) && !defined(__clang__))
         auto lamdba = []() -> void {};
         using LadmbaT = decltype(lamdba);
-        TEST(GCM("main()::<lambda()>", "(lambda at main.cpp:119:23)", "MSVC Generates random ids for lamdbas cant detect that"), LadmbaT);
+        TEST(GCM("main()::<lambda()>", "(lambda at main.cpp:121:23)", "MSVC Generates random ids for lamdbas cant detect that"), LadmbaT);
 #endif
 
 #endif // nullptr 
@@ -127,5 +125,4 @@ int main()
         std::puts(e.what());
     }
     std::cout << "[[[END OF TESTS]]]";
-    std::cin.get();
 }
