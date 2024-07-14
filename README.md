@@ -1,11 +1,11 @@
 # get_type_name<T>
 
-get_type_name is a single header file which is completely standalone C++98 compatible. does not use any standard library headers and provides a single function `zxshady::get_type_name<T>()` which 
+get_type_name is a single header file which is completely standalone C++98 compatible and C++11 constexpr. does not use any standard library headers and provides a single function `zxshady::get_type_name<T>()` which 
 gets the name of a type for GCC,Clang,MSVC and possibly other compilers who support either __PRETTY_FUNCTION__ or __FUNSIG__ macros
 
 # Examples:
 ```cpp
-zxshady::get_type_name_result name = zxshady::get_type_name<int>(); 
+constexpr zxshady::get_type_name_result name = zxshady::get_type_name<int>(); 
 // name is of type zxshady::get_type_name_result which has a conversion operator to any type
 // that supports construction from const char* and Container::size_type of the type
 
