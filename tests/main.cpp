@@ -116,7 +116,7 @@ int main()
 #if !(defined(_MSC_VER) && !defined(__clang__))
         auto lamdba = []() -> void {};
         using LadmbaT = decltype(lamdba);
-        TEST(GCM("main()::<lambda()>", "(lambda at main.cpp:121:23)", "MSVC Generates random ids for lamdbas cant detect that"), LadmbaT);
+        TEST(GCM("main()::<lambda()>", "(lambda at main.cpp:118:23)", "MSVC Generates random ids for lamdbas cant detect that"), LadmbaT);
 #endif
 
 #endif // nullptr 
