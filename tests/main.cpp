@@ -113,10 +113,10 @@ int main()
         TEST(GCM("unsigned int (main()::S::*)()", "unsigned int (S::*)()", "unsigned int(__thiscall main::S::* )(void)"), decltype(&S::f));
         TEST(GCM("int (main()::S::*)()", "int (S::*)()", "int(__thiscall main::S::* )(void)"), decltype(&S::g));
 
-#if !(defined(_MSC_VER) && !defined(__clang__))
+#if !(defined(_MSC_VER) || defined(__clang__))
         auto lamdba = []() -> void {};
         using LadmbaT = decltype(lamdba);
-        TEST(GCM("main()::<lambda()>", "(lambda at main.cpp:118:23)", "MSVC Generates random ids for lamdbas cant detect that"), LadmbaT);
+        TEST(GCM("main()::<lambda()>", "Clsng puts line and column number for lamdbas", "MSVC Generates random ids for lamdbas cant detect that"), LadmbaT);
 #endif
 
 #endif // nullptr 
